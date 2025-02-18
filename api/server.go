@@ -26,7 +26,7 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
 	//tokenMaker, err := token.NewJWTMaker(config.TokenSymmetricKey)
 	if err != nil {
-		return nil, fmt.Errorf("Cannot create a token maker : %w", err)
+		return nil, fmt.Errorf("cannot create a token maker : %w", err)
 	}
 	server := &Server{
 		config: config,
@@ -43,12 +43,13 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 func (server *Server) setupRouter() {
 	router := gin.Default()
 
-	router.POST("/accounts", server.createAccount)
-	router.GET("/accounts/:id", server.getAccount)
-	router.GET("/accounts", server.ListAccounts)
-
-	router.POST("/transfers", server.CreateTransfer)
-
+	// create a router group to add handlers that will be covered by the Authorization middleware
+	authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
+	authRoutes.POST("/accounts", server.createAccount)
+	authRoutes.GET("/accounts/:id", server.getAccount)
+	authRoutes.GET("/accounts", server.ListAccounts)
+	authRoutes.POST("/transfers", server.CreateTransfer)
+// Authorization middleware not required
 	router.POST("/users", server.createUser)
 	router.POST("/users/login", server.loginUser)
 
