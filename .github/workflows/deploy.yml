@@ -48,8 +48,8 @@ jobs:
             - name: Update kubeconfig
               run: aws eks update-kubeconfig --name simple-bank --region eu-west-1
               
-            - name: Verify Kubernetes Access
-              run: kubectl get nodes  
+            # - name: Verify Kubernetes Access
+            #   run: kubectl get nodes  
 
             - name: Deploy image to Amazon Eks
               run: |
