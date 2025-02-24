@@ -45,6 +45,12 @@ jobs:
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t latest .
                 docker push -a $REGISTRY/$REPOSITORY
 
+            - name: Update kubeconfig
+              run: aws eks update-kubeconfig --name simple-bank --region eu-west-1
+              
+            - name: Verify Kubernetes Access
+              run: kubectl get nodes  
+
             - name: Deploy image to Amazon Eks
               run: |
                 kubectl apply -f eks/aws-auth.yaml
