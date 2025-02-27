@@ -45,15 +45,15 @@ jobs:
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t $REGISTRY/$REPOSITORY:latest .
                 docker push -a $REGISTRY/$REPOSITORY
 
-            - name: Update kubeconfig
-              run: aws eks update-kubeconfig --name simple-bank --region eu-west-1
+            # - name: Update kubeconfig
+            #   run: aws eks update-kubeconfig --name simple-bank --region eu-west-1
 
-            - name: Verify Kubernetes Access
-              run: kubectl get nodes
+            # - name: Verify Kubernetes Access
+            #   run: kubectl get nodes
 
-            - name: Deploy image to Amazon Eks
-              run: |
-                kubectl apply -f eks/deployment.yaml
-                kubectl apply -f eks/service.yaml
-                kubectl apply -f eks/issuer.yaml
-                kubectl apply -f eks/ingress.yaml
+            # - name: Deploy image to Amazon Eks
+            #   run: |
+            #     kubectl apply -f eks/deployment.yaml
+            #     kubectl apply -f eks/service.yaml
+            #     kubectl apply -f eks/issuer.yaml
+            #     kubectl apply -f eks/ingress.yaml
